@@ -1,0 +1,21 @@
+{
+  "institution": "chase",
+  "account_type": "credit_card",
+  "header_fingerprint": [
+    "Transaction Date",
+    "Post Date",
+    "Description",
+    "Category",
+    "Type",
+    "Amount"
+  ],
+  "columns": {
+    "transaction_date": "Transaction Date",
+    "post_date": "Post Date",
+    "description": "Description",
+    "amount": "Amount",
+    "category": "Category"
+  },
+  "amount_sign": "negative_is_expense",
+  "date_format": "%m/%d/%Y"
+}
