@@ -11,6 +11,7 @@ async def test_tools_registered_with_fastmcp():
     assert names == {
         "ingest_statements",
         "recategorize_all",
+        "get_financial_overview",
         "get_transactions",
         "get_spending_by_category",
         "get_data_freshness",

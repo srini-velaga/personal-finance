@@ -2,12 +2,20 @@
 
 from fastmcp import FastMCP
 
-from personal_finance.tools import categories, health, ingest, spending, transactions
+from personal_finance.tools import (
+    categories,
+    health,
+    ingest,
+    overview,
+    spending,
+    transactions,
+)
 
 mcp: FastMCP = FastMCP("personal-finance")
 
 mcp.tool(ingest.ingest_statements)
 mcp.tool(categories.recategorize_all)
+mcp.tool(overview.get_financial_overview)
 mcp.tool(transactions.get_transactions)
 mcp.tool(spending.get_spending_by_category)
 mcp.tool(health.get_data_freshness)

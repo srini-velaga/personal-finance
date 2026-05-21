@@ -2,7 +2,7 @@
 
 A self-hosted **MCP server** that gives any MCP-compatible AI agent (Claude Desktop, Cursor, ChatGPT, etc.) personal financial analysis grounded in your own data — **without that data ever leaving your machine**.
 
-> Status: **v0.4 — multi-bank coverage (CSV)**. Chase, Amex, Discover, and Wells Fargo credit cards all ingest from CSV into local DuckDB with unified categories. Smoke-tested against ~500 real transactions; ~1.6% land in Uncategorized. PDF parsing (for BofA and PDF-only banks), budgets, debt, and recommendations are next — see [spec](#spec).
+> Status: **v0.5 — dashboard view**. Single-call `get_financial_overview` returns headline cashflow, top categories, top merchants, recent transactions, and per-account activity for any month/quarter/year. Four banks covered via CSV (Chase, Amex, Discover, Wells Fargo). PDF parsing, budgets, debt, and recommendations are next — see [spec](#spec).
 
 ## Why this exists
 
@@ -42,6 +42,7 @@ Restart Claude Desktop. You should see `personal-finance` listed in the MCP serv
 
 - `ingest_statements(folder)` — scan a directory of CSVs into local DuckDB
 - `recategorize_all()` — re-apply category rules after editing mappings
+- `get_financial_overview(period?)` — single-call dashboard: headline cashflow, top categories, top merchants, recent activity, per-account summary
 - `get_transactions(...)` — query stored transactions with filters
 - `get_spending_by_category(period)` — category breakdown for a month / quarter / year
 - `get_data_freshness()` — what's currently in your local DB
@@ -67,9 +68,9 @@ v1 (in progress):
 - [x] `get_transactions`, `get_spending_by_category`, `get_data_freshness` tools
 - [x] Unified category taxonomy + keyword mappings + `recategorize_all` tool
 - [x] Bank profiles: Chase, Amex, Discover, Wells Fargo (credit CSVs)
+- [x] `get_financial_overview()` dashboard tool — single-call snapshot
 - [ ] PDF statement parsing (pdfplumber + LLM fallback) — for BofA and PDF-only flows
 - [ ] Chase checking + other checking-account profiles
-- [ ] `get_financial_overview()` dashboard tool — single-call snapshot
 - [ ] Core analysis tools: cashflow, top merchants, recurring charges, MoM trend
 - [ ] Budgeting & goals (YAML config + tools)
 - [ ] Debt payoff modeling
