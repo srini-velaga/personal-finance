@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.pytest_cache/
+.ruff_cache/
+
+# uv
+.venv/
+# uv.lock IS committed — this is an application, not a library
+
+# Local data — NEVER commit financial data
+.personal-finance/
+*.duckdb
+*.duckdb.wal
+data/
+statements/
+*.csv
+*.pdf
+# Exception: anonymized test fixtures are allowed
+!tests/fixtures/**/*.csv
+!tests/fixtures/**/*.pdf
+
+# Env / secrets
+.env
+.env.local
+*.key
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
