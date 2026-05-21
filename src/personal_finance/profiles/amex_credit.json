@@ -1,0 +1,19 @@
+{
+  "institution": "amex",
+  "account_type": "credit_card",
+  "header_fingerprint": [
+    "Date",
+    "Description",
+    "Amount",
+    "Extended Details",
+    "Category"
+  ],
+  "columns": {
+    "transaction_date": "Date",
+    "description": "Description",
+    "amount": "Amount",
+    "category": "Category"
+  },
+  "amount_sign": "positive_is_expense",
+  "date_format": "%m/%d/%Y"
+}

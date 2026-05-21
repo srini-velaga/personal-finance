@@ -68,6 +68,40 @@ def test_unknown_falls_back_to_uncategorized():
     assert categorize(t) == "Uncategorized"
 
 
+def test_fallthrough_when_institution_maps_to_uncategorized(tmp_path, monkeypatch):
+    """If an institution mapping would yield Uncategorized, keyword rules still get a shot.
+
+    This is the v0.3 fix: Wells Fargo's ``Miscellaneous`` should not short-circuit
+    a transaction that has a clearly-categorizable description.
+    """
+    # Point load_mappings() at a tmp file with a Miscellaneous → Uncategorized rule.
+    import json
+    import sys
+    custom = tmp_path / "categories.json"
+    custom.write_text(json.dumps({
+        "institution_mappings": {
+            "wells_fargo": {"Miscellaneous": "Uncategorized"},
+        },
+        "keyword_rules": [
+            {"pattern": "NETFLIX", "category": "Entertainment"},
+        ],
+    }))
+    # The module is shadowed by a re-export of the `categorize` function in
+    # categories/__init__.py, so patch via sys.modules to get the real module.
+    cat_module = sys.modules["personal_finance.categories.categorize"]
+    monkeypatch.setattr(cat_module, "_user_mappings_path", lambda: custom)
+    load_mappings.cache_clear()
+
+    t = _txn(
+        institution="wells_fargo",
+        description="NETFLIX.COM SUBSCRIPTION",
+        amount="15.49",
+        original_category="Miscellaneous",
+    )
+    # Without the fix this would return "Uncategorized".
+    assert categorize(t) == "Entertainment"
+
+
 def test_negative_credit_card_amount_is_payment():
     t = _txn(description="PAYMENT THANK YOU - WEB", amount="-500.00")
     assert categorize(t) == "Payments & Credits"

@@ -1,0 +1,7 @@
+Master Category,Subcategory,Date,Location,Payee,Description,Payment Method,Amount,
+"Auto/Transportation","Gasoline","04/02/2026","EXTON        ,PA","WAWA","WAWA 1234 EXTON        ,PA","WELLS FARGO ACTIVE CASH VISA ...1111","$32.18",
+"Food/Drink","Restaurants","04/05/2026","EXTON        ,PA","CHIPOTLE","CHIPOTLE 9876 EXTON        ,PA","WELLS FARGO ACTIVE CASH VISA ...1111","$14.55",
+"Shopping","Online","04/10/2026","SEATTLE      ,WA","AMAZON","AMAZON.COM AMZN.COM/BILL","WELLS FARGO ACTIVE CASH VISA ...1111","$58.42",
+"Bills/Utilities","Streaming","04/15/2026","LOS GATOS    ,CA","NETFLIX","NETFLIX.COM LOS GATOS    ,CA","WELLS FARGO ACTIVE CASH VISA ...1111","$15.49",
+"Entertainment","Movies","04/20/2026","WEST CHESTER ,PA","AMC THEATRES","AMC 12 WEST CHESTER WEST CHESTER ,PA","WELLS FARGO ACTIVE CASH VISA ...1111","$22.50",
+"Bills/Utilities","Credit Card Payment","04/25/2026","","ONLINE PAYMENT","ONLINE PAYMENT THANK YOU","WELLS FARGO ACTIVE CASH VISA ...1111","-$1450.00",

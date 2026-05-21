@@ -64,11 +64,14 @@ def categorize(txn: Transaction) -> str:
             return "Payments & Credits"
         return "Income"
 
-    # 2. Institution category mapping.
+    # 2. Institution category mapping. If a mapping exists but points at
+    # Uncategorized (i.e. the bank itself called it "Miscellaneous"), fall
+    # through to keyword rules — Uncategorized is the *fallback*, never a
+    # destination.
     if txn.original_category:
         inst_map = mappings.get("institution_mappings", {}).get(txn.institution, {})
         mapped = inst_map.get(txn.original_category)
-        if mapped and mapped in UNIFIED_CATEGORIES:
+        if mapped and mapped in UNIFIED_CATEGORIES and mapped != UNCATEGORIZED:
             return mapped
 
     # 3. Keyword fallback.

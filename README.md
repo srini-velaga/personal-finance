@@ -2,7 +2,7 @@
 
 A self-hosted **MCP server** that gives any MCP-compatible AI agent (Claude Desktop, Cursor, ChatGPT, etc.) personal financial analysis grounded in your own data — **without that data ever leaving your machine**.
 
-> Status: **v0.3 — unified category taxonomy**. CSV statements (Chase credit so far) ingest into local DuckDB with each transaction mapped to a unified category. Agent can query transactions, spending by category, and re-apply rules. PDF, more banks, budgets, debt, and recommendations are next — see [spec](#spec).
+> Status: **v0.4 — multi-bank coverage (CSV)**. Chase, Amex, Discover, and Wells Fargo credit cards all ingest from CSV into local DuckDB with unified categories. Smoke-tested against ~500 real transactions; ~1.6% land in Uncategorized. PDF parsing (for BofA and PDF-only banks), budgets, debt, and recommendations are next — see [spec](#spec).
 
 ## Why this exists
 
@@ -66,8 +66,9 @@ v1 (in progress):
 - [x] One bank profile shipped (Chase credit)
 - [x] `get_transactions`, `get_spending_by_category`, `get_data_freshness` tools
 - [x] Unified category taxonomy + keyword mappings + `recategorize_all` tool
-- [ ] More bank profiles (Amex, Discover, Wells Fargo, BofA, Chase checking)
-- [ ] PDF statement parsing (pdfplumber + LLM fallback)
+- [x] Bank profiles: Chase, Amex, Discover, Wells Fargo (credit CSVs)
+- [ ] PDF statement parsing (pdfplumber + LLM fallback) — for BofA and PDF-only flows
+- [ ] Chase checking + other checking-account profiles
 - [ ] `get_financial_overview()` dashboard tool — single-call snapshot
 - [ ] Core analysis tools: cashflow, top merchants, recurring charges, MoM trend
 - [ ] Budgeting & goals (YAML config + tools)

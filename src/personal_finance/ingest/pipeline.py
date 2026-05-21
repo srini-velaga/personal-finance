@@ -145,7 +145,11 @@ def ingest_folder(
 
     result = IngestResult()
 
-    for path in sorted(folder.rglob("*.csv")):
+    # rglob is case-sensitive on the pattern, but bank exports show up with
+    # both ``.csv`` and ``.CSV`` (Chase uses uppercase). Walk once and filter
+    # by lowercased suffix.
+    csv_files = sorted(p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() == ".csv")
+    for path in csv_files:
         result.files_scanned += 1
         file_entry: dict = {"path": str(path)}
 

@@ -1,0 +1,21 @@
+{
+  "institution": "wells_fargo",
+  "account_type": "credit_card",
+  "header_fingerprint": [
+    "Master Category",
+    "Subcategory",
+    "Date",
+    "Payee",
+    "Description",
+    "Payment Method",
+    "Amount"
+  ],
+  "columns": {
+    "transaction_date": "Date",
+    "description": "Description",
+    "amount": "Amount",
+    "category": "Master Category"
+  },
+  "amount_sign": "positive_is_expense",
+  "date_format": "%m/%d/%Y"
+}

@@ -1,0 +1,18 @@
+{
+  "institution": "discover",
+  "account_type": "credit_card",
+  "header_fingerprint": [
+    "Trans. Date",
+    "Description",
+    "Amount",
+    "Category"
+  ],
+  "columns": {
+    "transaction_date": "Trans. Date",
+    "description": "Description",
+    "amount": "Amount",
+    "category": "Category"
+  },
+  "amount_sign": "positive_is_expense",
+  "date_format": "%m/%d/%Y"
+}
