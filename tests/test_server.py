@@ -10,6 +10,7 @@ async def test_tools_registered_with_fastmcp():
     names = {t.name for t in tools}
     assert names == {
         "ingest_statements",
+        "recategorize_all",
         "get_transactions",
         "get_spending_by_category",
         "get_data_freshness",

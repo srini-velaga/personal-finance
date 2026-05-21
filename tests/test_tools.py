@@ -54,9 +54,9 @@ def test_get_transactions_filters_by_date_and_category(populated_db):
     result = get_transactions(
         start_date="2026-04-05",
         end_date="2026-04-15",
-        category="Groceries",
+        category="Groceries",  # matches unified_category now
     )
-    # Only Whole Foods on 04-05 is in range AND category Groceries.
+    # Only Whole Foods on 04-05 is in range AND unified_category Groceries.
     assert result["count"] == 1
     assert "WHOLE FOODS" in result["transactions"][0]["description"].upper()
 
@@ -78,11 +78,15 @@ def test_get_spending_by_category_monthly(populated_db):
     assert result["start"] == "2026-04-01"
     assert result["end"] == "2026-04-30"
 
-    # Expenses only — payment row is income, excluded.
+    # Expenses only — payment row is filtered out (amount < 0).
     cats = {c["category"]: c["amount"] for c in result["categories"]}
-    assert "Food & Drink" in cats
+    # Chase "Food & Drink" → unified "Food & Dining".
+    assert "Food & Dining" in cats
+    # Groceries comes through unchanged.
     assert cats["Groceries"] == pytest.approx(83.42 + 61.22)
-    assert "Payment" not in cats and "" not in cats
+    # Payments and unmapped originals must not appear.
+    assert "Payments & Credits" not in cats
+    assert "" not in cats
 
     total = sum(c["amount"] for c in result["categories"])
     assert result["total_expense"] == pytest.approx(total)

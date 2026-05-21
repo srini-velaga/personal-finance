@@ -2,7 +2,7 @@
 
 A self-hosted **MCP server** that gives any MCP-compatible AI agent (Claude Desktop, Cursor, ChatGPT, etc.) personal financial analysis grounded in your own data — **without that data ever leaving your machine**.
 
-> Status: **v0.2 — ingest pipeline online**. CSV statements (Chase credit so far) ingest into local DuckDB; agent can query transactions and spending. PDF, more banks, budgets, debt, and recommendations are next — see [spec](#spec).
+> Status: **v0.3 — unified category taxonomy**. CSV statements (Chase credit so far) ingest into local DuckDB with each transaction mapped to a unified category. Agent can query transactions, spending by category, and re-apply rules. PDF, more banks, budgets, debt, and recommendations are next — see [spec](#spec).
 
 ## Why this exists
 
@@ -41,6 +41,7 @@ Add this to your Claude Desktop config (`~/Library/Application Support/Claude/cl
 Restart Claude Desktop. You should see `personal-finance` listed in the MCP servers menu with these tools:
 
 - `ingest_statements(folder)` — scan a directory of CSVs into local DuckDB
+- `recategorize_all()` — re-apply category rules after editing mappings
 - `get_transactions(...)` — query stored transactions with filters
 - `get_spending_by_category(period)` — category breakdown for a month / quarter / year
 - `get_data_freshness()` — what's currently in your local DB
@@ -64,10 +65,11 @@ v1 (in progress):
 - [x] CSV statement ingestion (profile-based, header-fingerprint matching)
 - [x] One bank profile shipped (Chase credit)
 - [x] `get_transactions`, `get_spending_by_category`, `get_data_freshness` tools
-- [ ] PDF statement parsing (pdfplumber + LLM fallback)
+- [x] Unified category taxonomy + keyword mappings + `recategorize_all` tool
 - [ ] More bank profiles (Amex, Discover, Wells Fargo, BofA, Chase checking)
+- [ ] PDF statement parsing (pdfplumber + LLM fallback)
+- [ ] `get_financial_overview()` dashboard tool — single-call snapshot
 - [ ] Core analysis tools: cashflow, top merchants, recurring charges, MoM trend
-- [ ] Unified category taxonomy + keyword mappings
 - [ ] Budgeting & goals (YAML config + tools)
 - [ ] Debt payoff modeling
 - [ ] Recommendation layer with standard disclaimer wrapper

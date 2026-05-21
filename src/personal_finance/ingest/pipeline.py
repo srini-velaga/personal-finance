@@ -14,6 +14,7 @@ from pathlib import Path
 
 import duckdb
 
+from personal_finance.categories import categorize
 from personal_finance.ingest.csv_parser import parse_csv
 from personal_finance.ingest.fingerprint import file_hash
 from personal_finance.ingest.profile import Profile, load_profiles, match_profile
@@ -170,6 +171,8 @@ def ingest_folder(
             continue
 
         txns = parse_csv(path, profile)
+        for t in txns:
+            t.unified_category = categorize(t)
         inserted, duplicate = _insert_transactions(conn, txns)
         _log_file(conn, fhash, path, profile, len(txns))
 

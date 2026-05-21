@@ -1,0 +1,41 @@
+{
+  "_doc": "Bank category mappings and keyword fallback rules. Edit freely; categories must be drawn from UNIFIED_CATEGORIES in taxonomy.py. Precedence: institution mapping > keyword rule > Uncategorized. Negative amounts on credit cards are auto-mapped to 'Payments & Credits' and on checking/savings to 'Income' before either of these runs.",
+  "institution_mappings": {
+    "chase": {
+      "Food & Drink": "Food & Dining",
+      "Groceries": "Groceries",
+      "Gas": "Transportation",
+      "Automotive": "Transportation",
+      "Travel": "Travel",
+      "Shopping": "Shopping",
+      "Personal": "Shopping",
+      "Bills & Utilities": "Bills & Utilities",
+      "Entertainment": "Entertainment",
+      "Health & Wellness": "Health",
+      "Home": "Home",
+      "Education": "Bills & Utilities",
+      "Professional Services": "Bills & Utilities",
+      "Gifts & Donations": "Shopping",
+      "Fees & Adjustments": "Fees"
+    }
+  },
+  "keyword_rules": [
+    {"pattern": "STARBUCKS|DUNKIN|PEET'?S|BLUE BOTTLE|PHILZ", "category": "Food & Dining"},
+    {"pattern": "MCDONALD|BURGER KING|CHIPOTLE|TACO BELL|SUBWAY|WENDY|KFC|POPEYE|PANERA|SHAKE SHACK|FIVE GUYS|IN[- ]?N[- ]?OUT", "category": "Food & Dining"},
+    {"pattern": "DOORDASH|UBER ?EATS|GRUBHUB|POSTMATES|SEAMLESS|CAVIAR", "category": "Food & Dining"},
+    {"pattern": "WHOLE FOODS|TRADER JOE'?S|SAFEWAY|KROGER|ALDI|TARGET GROCERY|H-?MART|COSTCO|SAFEWAY|VONS|RALPHS|WEGMANS|PUBLIX|HEB\\b|SPROUTS", "category": "Groceries"},
+    {"pattern": "UBER\\b|LYFT|TAXI", "category": "Transportation"},
+    {"pattern": "SHELL\\b|EXXON|CHEVRON|MOBIL|BP \\b|VALERO|76 GAS|ARCO\\b", "category": "Transportation"},
+    {"pattern": "MTA\\b|BART\\b|CALTRAIN|METRO\\b|TRANSIT|PARKING", "category": "Transportation"},
+    {"pattern": "AIRBNB|HOTEL|MARRIOTT|HILTON|HYATT|UNITED AIR|DELTA AIR|AMERICAN AIR|SOUTHWEST AIR|JETBLUE|ALASKA AIR", "category": "Travel"},
+    {"pattern": "AMAZON\\b|AMZN\\b|TARGET\\b|WALMART|WALGREENS|CVS\\b|BEST BUY|ETSY|EBAY|APPLE\\.COM/BILL", "category": "Shopping"},
+    {"pattern": "NETFLIX|HULU|SPOTIFY|DISNEY ?PLUS|HBO\\b|MAX\\b|YOUTUBE PREMIUM|APPLE TV|PRIME VIDEO|PARAMOUNT", "category": "Entertainment"},
+    {"pattern": "AT&T|VERIZON|T-?MOBILE|COMCAST|XFINITY|SPECTRUM|PG&E|CON ED|GOOGLE FI", "category": "Bills & Utilities"},
+    {"pattern": "GOOGLE|GITHUB|OPENAI|ANTHROPIC|CLAUDE|CHATGPT|AWS|AZURE", "category": "Bills & Utilities"},
+    {"pattern": "CVS PHARM|WALGREENS PHARM|KAISER|ONE MEDICAL|TELADOC|GYMNASIUM|EQUINOX|24 ?HOUR FIT|PELOTON", "category": "Health"},
+    {"pattern": "IKEA|HOME DEPOT|LOWE'?S|WAYFAIR|HOME GOODS|RESTORATION HARDWARE", "category": "Home"},
+    {"pattern": "PAYMENT THANK YOU|AUTOPAY|ONLINE PAYMENT|MOBILE PAYMENT", "category": "Payments & Credits"},
+    {"pattern": "TRANSFER FROM|TRANSFER TO|ZELLE|VENMO|CASHAPP|PAYPAL TRANSFER", "category": "Transfers"},
+    {"pattern": "FEE\\b|INTEREST CHARGE|LATE FEE|FOREIGN TRANSACTION|ATM FEE", "category": "Fees"}
+  ]
+}
