@@ -35,13 +35,22 @@ def multi_bank_db(tmp_path, monkeypatch):
     return db_file
 
 
-def test_overview_default_period_is_most_recent_month_with_data(multi_bank_db):
+def test_overview_default_is_last_12_months(multi_bank_db):
+    """No period → rolling 365-day window ending today.
+
+    This is the polish-pass v0.6 change: previously the default was
+    "most recent month with data" which gave a sparse view when the
+    latest statement was mid-month. Last 12 months is time-stable.
+    """
+    from datetime import date, timedelta
+
     from personal_finance.tools.overview import get_financial_overview
     result = get_financial_overview()
-    # All fixtures are in April 2026.
-    assert result["period"] == "2026-04"
-    assert result["start"] == "2026-04-01"
-    assert result["end"] == "2026-04-30"
+    assert result["period"] == "last_12_months"
+
+    today = date.today()
+    assert result["end"] == today.isoformat()
+    assert result["start"] == (today - timedelta(days=365)).isoformat()
 
 
 def test_overview_headline_excludes_payments_from_income(multi_bank_db):

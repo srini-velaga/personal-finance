@@ -25,33 +25,37 @@ from personal_finance.tools.spending import _parse_period
 _EXCLUDED_FROM_CASHFLOW = ("Payments & Credits", "Transfers")
 
 
-def _resolve_period(period: str | None, conn) -> tuple[str, date, date]:
-    """Return ``(label, start, end)``. Defaults to the most recent month with data."""
-    if period is not None:
-        start, end = _parse_period(period)
-        return period, start, end
+_DEFAULT_PERIOD = "last_12_months"
 
-    row = conn.execute(
-        "SELECT MAX(transaction_date) FROM transactions"
-    ).fetchone()
-    latest: date | None = row[0] if row else None
-    if latest is None:
-        # No data yet — fall back to today's month so the response shape is stable.
-        today = date.today()
-        period = f"{today.year:04d}-{today.month:02d}"
-    else:
-        period = f"{latest.year:04d}-{latest.month:02d}"
-    start, end = _parse_period(period)
-    return period, start, end
+
+def _resolve_period(period: str | None, conn) -> tuple[str, date, date]:
+    """Return ``(label, start, end)``.
+
+    Defaults to ``last_12_months`` (rolling 365-day window) when ``period``
+    is None. Time-stable across years: a returning user gets the same shape
+    of response every time they ask for "an overview", regardless of when
+    their statements were imported.
+    """
+    label = period if period is not None else _DEFAULT_PERIOD
+    start, end = _parse_period(label, conn=conn)
+    return label, start, end
 
 
 def get_financial_overview(period: str | None = None, top_n: int = 5) -> dict:
     """Return a one-glance snapshot of finances for a given period.
 
+    Best tool to call for natural-language asks like "give me an overview",
+    "how am I doing", or "show me my finances".
+
     Args:
-        period: ``"YYYY-MM"``, ``"YYYY-Qn"``, or ``"YYYY"``. If omitted,
-            defaults to the **most recent month that has data** so the
-            response is never empty when transactions exist.
+        period: Any value accepted by the period parser:
+            ``"YYYY-MM"`` / ``"YYYY-Qn"`` / ``"YYYY"`` / ``"YYYY-MM-DD"``
+            for calendar windows, or ``"ytd"`` / ``"last_30_days"`` /
+            ``"last_90_days"`` / ``"last_12_months"`` / ``"all"`` /
+            ``"lifetime"`` for rolling and DB-relative windows.
+            Defaults to ``"last_12_months"`` (a rolling 365-day window) so
+            an unqualified "overview" returns a broad, populated picture
+            rather than a sparse current-month view.
         top_n: How many rows to return in the top-categories and
             top-merchants lists. Clamped to [1, 25].
 

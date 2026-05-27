@@ -2,7 +2,7 @@
 
 A self-hosted **MCP server** that gives any MCP-compatible AI agent (Claude Desktop, Cursor, ChatGPT, etc.) personal financial analysis grounded in your own data — **without that data ever leaving your machine**.
 
-> Status: **v0.5 — dashboard view**. Single-call `get_financial_overview` returns headline cashflow, top categories, top merchants, recent transactions, and per-account activity for any month/quarter/year. Four banks covered via CSV (Chase, Amex, Discover, Wells Fargo). PDF parsing, budgets, debt, and recommendations are next — see [spec](#spec).
+> Status: **v0.6 — period flexibility + docs**. `get_financial_overview` now defaults to a rolling 12-month window and accepts `ytd`, `last_30_days`, `last_90_days`, `last_12_months`, `all` in addition to calendar periods. Four banks covered via CSV (Chase, Amex, Discover, Wells Fargo). PDF parsing, budgets, debt, and recommendations are next — see [spec](spec.md).
 
 ## Why this exists
 
@@ -26,7 +26,7 @@ Add this to your Claude Desktop config (`~/Library/Application Support/Claude/cl
 {
   "mcpServers": {
     "personal-finance": {
-      "command": "uv",
+      "command": "/opt/homebrew/bin/uv",
       "args": [
         "--directory",
         "/Users/YOU/Documents/personal/personal-finance",
@@ -38,7 +38,9 @@ Add this to your Claude Desktop config (`~/Library/Application Support/Claude/cl
 }
 ```
 
-Restart Claude Desktop. You should see `personal-finance` listed in the MCP servers menu with these tools:
+> **Use the absolute path to `uv`.** Claude Desktop on macOS launches with a minimal `PATH` (no Homebrew). `which uv` will tell you the right path; on Apple Silicon it's usually `/opt/homebrew/bin/uv`.
+
+**Fully quit Claude Desktop** (Cmd+Q — not just close the window) and reopen. You should see `personal-finance` listed in the MCP servers menu with these tools:
 
 - `ingest_statements(folder)` — scan a directory of CSVs into local DuckDB
 - `recategorize_all()` — re-apply category rules after editing mappings
@@ -46,6 +48,19 @@ Restart Claude Desktop. You should see `personal-finance` listed in the MCP serv
 - `get_transactions(...)` — query stored transactions with filters
 - `get_spending_by_category(period)` — category breakdown for a month / quarter / year
 - `get_data_freshness()` — what's currently in your local DB
+
+## Try it
+
+Once connected in Claude Desktop, these are real prompts that work end-to-end:
+
+- *"Ingest the statements in ~/Documents/personal/financial-statements/statements"*
+- *"Give me a financial overview"* — defaults to the last 12 months
+- *"How was Q4 2025?"* / *"Show me year-to-date"* / *"Last 90 days?"*
+- *"Show me 2025 spending by category"*
+- *"What were my top food merchants last quarter?"*
+- *"Find every Amazon transaction over $50 in 2025"*
+
+If a category looks wrong, edit `~/.personal-finance/categories.json` (or the shipped `src/personal_finance/categories/mappings.json`) and ask Claude to *"recategorize everything"*.
 
 ## Data location
 
@@ -88,9 +103,11 @@ v2 (later):
 - Plaid is **optional** and uses your own API keys; tokens encrypted at rest
 - Recommendations are informational — **not licensed financial advice**
 
-## Spec
+## More docs
 
-Full requirements spec: [spec.md](spec.md).
+- [Full spec](spec.md) — wedge, requirements, architecture
+- [AGENTS.md](AGENTS.md) — guidance for AI agents working in this repo (code layout, conventions, how to add a bank)
+- [docs/banks.md](docs/banks.md) — per-bank profile reference (formats, quirks, what's been tested)
 
 ## License
 
